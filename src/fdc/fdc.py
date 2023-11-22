@@ -16,7 +16,8 @@ class FDC:
             result_json = humps.decamelize(json.loads(req.text))
             food = Food.Food(**result_json)
             return food
-        raise Exception(req.status_code)
+        req.raise_for_status()
+
 
 
 if __name__ == "__main__":
@@ -24,5 +25,5 @@ if __name__ == "__main__":
         json_file = json.load(file)
         key = json_file["api_key"]
     fdc = FDC(key)
-    x = fdc.get_food(2262074)
+    x = fdc.get_food(1)
     print(x)
