@@ -4,7 +4,7 @@ import requests
 import humps
 
 
-class FDC():
+class FDC:
     def __init__(self, api_key):
         self.api_key = api_key
         self.base_url = "https://api.nal.usda.gov/fdc/v1/"
