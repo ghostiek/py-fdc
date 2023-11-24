@@ -1,5 +1,5 @@
 import json
-from datatypes import Food, AbridgedFood
+from datatypes import Food, AbridgedFood, FoundationFood
 import requests
 import humps
 from typing import List
@@ -11,7 +11,8 @@ class FDC:
         self.base_url = "https://api.nal.usda.gov/fdc/v1/"
 
     def get_food(self, id: str, _format: str = "full",
-                 _nutrients: List[int] = None) -> Food.Food | AbridgedFood.AbridgedFood:
+                 _nutrients: List[int] = None, raw: bool = False) \
+            -> str | FoundationFood.FoundationFood | AbridgedFood.AbridgedFood:
         """
         Retrieves a single food item by an FDC ID. Optional format and nutrients can be specified.
         :param id: FDC id
@@ -22,6 +23,7 @@ class FDC:
         information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203,
         204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching
         nutrients, the food will be returned with an empty foodNutrients element.
+        :param raw: Return the raw json string if True, else serialize the output
         :return: Food or AbridgedFood object
         """
 
@@ -31,7 +33,16 @@ class FDC:
         req = requests.get(url)
         if req.status_code == 200:
             result_json = humps.decamelize(json.loads(req.text))
-            food = Food.Food(**result_json) if _format == "full" else AbridgedFood.AbridgedFood(**result_json)
+            if raw:
+                return req.text
+            elif _format == "abridged":
+                food = AbridgedFood.AbridgedFood(**result_json)
+            else:
+                # Can be one of 3
+                if result_json["data_type"] == "Foundation":
+                    food = FoundationFood.FoundationFood(**result_json)
+                else:
+                    food = None
             return food
         req.raise_for_status()
 
@@ -66,5 +77,5 @@ if __name__ == "__main__":
         json_file = json.load(file)
         key = json_file["api_key"]
     fdc = FDC(key)
-    x = fdc.get_foods(["2262074", "2262075"], "abridged")
+    x = fdc.get_food("2262075", "full")
     print(x)

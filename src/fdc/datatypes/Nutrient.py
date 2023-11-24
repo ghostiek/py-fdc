@@ -1,5 +1,5 @@
 class Nutrient:
-    def __init__(self, id, number, name, rank, unit_name):
+    def __init__(self, id: int, number: str, name: str, rank: int, unit_name: str):
         self.id = id
         self.number = number
         self.name = name
