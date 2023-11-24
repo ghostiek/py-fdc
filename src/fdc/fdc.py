@@ -1,5 +1,5 @@
 import json
-from datatypes import Food, AbridgedFood, FoundationFood
+from datatypes import Food, AbridgedFood, FoundationFood, MarketAcquisitionFood
 import requests
 import humps
 from typing import List
@@ -12,7 +12,8 @@ class FDC:
 
     def get_food(self, id: str, _format: str = "full",
                  _nutrients: List[int] = None, raw: bool = False) \
-            -> str | FoundationFood.FoundationFood | AbridgedFood.AbridgedFood:
+            -> str | FoundationFood.FoundationFood | AbridgedFood.AbridgedFood | \
+               MarketAcquisitionFood.MarketAcquisitionFood:
         """
         Retrieves a single food item by an FDC ID. Optional format and nutrients can be specified.
         :param id: FDC id
@@ -50,13 +51,15 @@ class FDC:
             pass
         elif result_json["data_type"] == "Survey (FNDDS)":
             pass
+        elif result_json["data_type"] == "Market Acquisition":
+            food = MarketAcquisitionFood.MarketAcquisitionFood(**result_json)
         else:
             print(f"Unexpected DataType: {result_json['data_type']}")
         return food
 
-
-    def get_foods(self, ids: List[str], _format: str = "full", _nutrients: List[int] = None, raw: bool = True)\
-            -> str | List[FoundationFood.FoundationFood] | List[AbridgedFood.AbridgedFood]:
+    def get_foods(self, ids: List[str], _format: str = "full", _nutrients: List[int] = None, raw: bool = False) \
+            -> str | List[FoundationFood.FoundationFood] | List[AbridgedFood.AbridgedFood] | \
+               List[MarketAcquisitionFood.MarketAcquisitionFood]:
         """
         Retrieves a list of food items by a list of up to 20 FDC IDs. Optional format and nutrients can be specified.
         Invalid FDC ID's or ones that are not found are omitted and an empty set is returned if there are no matches.
@@ -71,7 +74,7 @@ class FDC:
         """
         url = self.base_url + f"foods?api_key={self.api_key}&format={_format}"
         for fdc_id in ids:
-            url+=f"&fdcIds={fdc_id}"
+            url += f"&fdcIds={fdc_id}"
         if _nutrients:
             url += f"&nutrients={_nutrients}"
         req = requests.get(url)
@@ -93,11 +96,12 @@ class FDC:
                 pass
             elif item["data_type"] == "Survey (FNDDS)":
                 pass
+            elif item["data_type"] == "Market Acquisition":
+                foods.append(MarketAcquisitionFood.MarketAcquisitionFood(**item))
             else:
                 print(f"Unexpected DataType: {item['data_type']}")
                 foods.append(None)
         return foods
-
 
 
 if __name__ == "__main__":
