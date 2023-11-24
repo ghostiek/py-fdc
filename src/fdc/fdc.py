@@ -23,7 +23,7 @@ class FDC:
         information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203,
         204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching
         nutrients, the food will be returned with an empty foodNutrients element.
-        :param raw: Return the raw json string if True, else serialize the output
+        :param raw: Optional. Return the raw json string if True, else serialize the output
         :return: Food or AbridgedFood object
         """
 
@@ -31,23 +31,32 @@ class FDC:
         if _nutrients:
             url += f"&nutrients={_nutrients}"
         req = requests.get(url)
-        if req.status_code == 200:
-            result_json = humps.decamelize(json.loads(req.text))
-            if raw:
-                return req.text
-            elif _format == "abridged":
-                food = AbridgedFood.AbridgedFood(**result_json)
-            else:
-                # Can be one of 3
-                if result_json["data_type"] == "Foundation":
-                    food = FoundationFood.FoundationFood(**result_json)
-                else:
-                    food = None
-            return food
-        req.raise_for_status()
+        if req.status_code != 200:
+            req.raise_for_status()
 
-    def get_foods(self, ids: List[str], _format: str = "full",
-                  _nutrients: List[int] = None) -> List[Food.Food] | List[AbridgedFood.AbridgedFood]:
+        result_json = humps.decamelize(json.loads(req.text))
+        food = None
+        if raw:
+            return req.text
+        elif _format == "abridged":
+            food = AbridgedFood.AbridgedFood(**result_json)
+        elif result_json["data_type"] == "Foundation":
+            food = FoundationFood.FoundationFood(**result_json)
+        elif result_json["data_type"] == "Branded":
+            pass
+        elif result_json["data_type"] == "Foundation":
+            food = FoundationFood.FoundationFood(**result_json)
+        elif result_json["data_type"] == "SR Legacy":
+            pass
+        elif result_json["data_type"] == "Survey (FNDDS)":
+            pass
+        else:
+            print(f"Unexpected DataType: {result_json['data_type']}")
+        return food
+
+
+    def get_foods(self, ids: List[str], _format: str = "full", _nutrients: List[int] = None, raw: bool = True)\
+            -> str | List[FoundationFood.FoundationFood] | List[AbridgedFood.AbridgedFood]:
         """
         Retrieves a list of food items by a list of up to 20 FDC IDs. Optional format and nutrients can be specified.
         Invalid FDC ID's or ones that are not found are omitted and an empty set is returned if there are no matches.
@@ -57,7 +66,8 @@ class FDC:
         information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203,
         204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching
         nutrients, the food will be returned with an empty foodNutrients element.
-        :return: List of Food or AbridgedFood objects
+        :param raw: Optional. Return the raw json string if True, else serialize the output
+        :return: List of FoundationFood, AbridgedFood, SRLegacyFood, BrandedFood, or SurveryFood objects
         """
         url = self.base_url + f"foods?api_key={self.api_key}&format={_format}"
         for fdc_id in ids:
@@ -65,11 +75,29 @@ class FDC:
         if _nutrients:
             url += f"&nutrients={_nutrients}"
         req = requests.get(url)
-        if req.status_code == 200:
-            result_json = humps.decamelize(json.loads(req.text))
-            foods = [Food.Food(**item) for item in result_json] if _format == "full" else [AbridgedFood.AbridgedFood(**item) for item in result_json]
-            return foods
-        req.raise_for_status()
+        if req.status_code != 200:
+            req.raise_for_status()
+
+        result_json = humps.decamelize(json.loads(req.text))
+        if raw:
+            return req.text
+        foods = []
+        for item in result_json:
+            if _format == "abridged":
+                foods.append(AbridgedFood.AbridgedFood(**result_json))
+            elif item["data_type"] == "Branded":
+                pass
+            elif item["data_type"] == "Foundation":
+                foods.append(FoundationFood.FoundationFood(**item))
+            elif item["data_type"] == "SR Legacy":
+                pass
+            elif item["data_type"] == "Survey (FNDDS)":
+                pass
+            else:
+                print(f"Unexpected DataType: {item['data_type']}")
+                foods.append(None)
+        return foods
+
 
 
 if __name__ == "__main__":
@@ -77,5 +105,5 @@ if __name__ == "__main__":
         json_file = json.load(file)
         key = json_file["api_key"]
     fdc = FDC(key)
-    x = fdc.get_food("2262075", "full")
+    x = fdc.get_foods(["2262075", "2262076"], "full")
     print(x)
