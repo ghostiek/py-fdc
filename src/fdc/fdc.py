@@ -11,51 +11,51 @@ class FDC:
         self.api_key = api_key
         self.base_url = "https://api.nal.usda.gov/fdc/v1/"
 
-    def get_food(self, id: str, _format: str = "full", _nutrients: List[int] = None) -> Food.Food:
+    def get_food(self, id: str, format_: str = "full", nutrients: List[int] = None) -> Food:
         """
         Retrieves a single food item by an FDC ID. Optional format and nutrients can be specified.
         :param id: FDC id
         of the food to retrieve
-        :param _format: Optional. 'abridged' for an abridged set of elements, 'full' for all
+        :param format_: Optional. 'abridged' for an abridged set of elements, 'full' for all
         elements (default).
-        :param _nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient
+        :param nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient
         information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203,
         204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching
         nutrients, the food will be returned with an empty foodNutrients element.
         :return: `Food` object
         """
-        req = self._call_food(id, _format, _nutrients)
+        req = self._call_food(id, format_, nutrients)
         item = humps.decamelize(json.loads(req.text))
-        food = self._match_data_type(item, _format)
+        food = self._match_data_type(item, format_)
         return food
 
-    def get_food_raw(self, id: str, _format: str = "full", _nutrients: List[int] = None) -> str:
+    def get_food_raw(self, id: str, format_: str = "full", nutrients: List[int] = None) -> str:
         """
         Retrieves a single food item by an FDC ID. Optional format and nutrients can be specified.
         :param id: FDC id
         of the food to retrieve
-        :param _format: Optional. 'abridged' for an abridged set of elements, 'full' for all
+        :param format_: Optional. 'abridged' for an abridged set of elements, 'full' for all
         elements (default).
-        :param _nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient
+        :param nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient
         information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203,
         204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching
         nutrients, the food will be returned with an empty foodNutrients element.
         :return: `str` of json
         """
-        req = self._call_food(id, _format, _nutrients)
+        req = self._call_food(id, format_, nutrients)
         return req.text
 
-    def _call_food(self, id: str, _format: str = "full", _nutrients: List[int] = None) -> requests.Response:
-        url = self.base_url + f"food/{str(id)}?api_key={self.api_key}&format={_format}"
-        if _nutrients:
-            url += f"&nutrients={_nutrients}"
+    def _call_food(self, id: str, format_: str = "full", nutrients: List[int] = None) -> requests.Response:
+        url = self.base_url + f"food/{str(id)}?api_key={self.api_key}&format={format_}"
+        if nutrients:
+            url += f"&nutrients={nutrients}"
         req = requests.get(url)
         if req.status_code != 200:
             req.raise_for_status()
         return req
 
-    def get_foods(self, ids: List[str], format_: str = "full", _nutrients: List[int] = None) \
-            -> List[Food.Food]:
+    def get_foods(self, ids: List[str], format_: str = "full", nutrients: List[int] = None) \
+            -> List[Food]:
         """
         Retrieves a list of food items by a list of up to 20 FDC IDs. Optional format and nutrients can be specified.
         Invalid FDC ID's or ones that are not found are omitted and an empty set is returned if there are no matches.
@@ -67,7 +67,7 @@ class FDC:
         nutrients, the food will be returned with an empty foodNutrients element.
         :return: List of `Food` Objects
         """
-        req = self._call_foods(ids, format_, _nutrients)
+        req = self._call_foods(ids, format_, nutrients)
         result_json = humps.decamelize(json.loads(req.text))
         foods = []
         for item in result_json:
@@ -102,7 +102,7 @@ class FDC:
         return req
 
     def get_foods_list(self, data_type: str = None, page_size: int = None, page_number: int = None, sort_by: str = None,
-                       sort_order: str = None) -> list[AbridgedFood.AbridgedFood]:
+                       sort_order: str = None) -> list[AbridgedFood]:
         """
         Retrieves a paged list of foods. Use the pageNumber parameter to page through the entire result set.
         :param data_type: Optional. Filter on a specific data type; specify one or more values in an array.
@@ -120,7 +120,7 @@ class FDC:
         result_json = humps.decamelize(json.loads(req.text))
         foods = []
         for item in result_json:
-            food = AbridgedFood.AbridgedFood(**item)
+            food = AbridgedFood(**item)
             foods.append(food)
         return foods
 
@@ -162,7 +162,7 @@ class FDC:
 
     def get_foods_search(self, query: str, data_type: str = None, page_size: int = None, page_number: int = None,
                          sort_by: str = None, sort_order: str = None, brand_owner: str = None) \
-            -> SearchResult.SearchResult:
+            -> SearchResult:
         """
         Search for foods using keywords. Results can be filtered by dataType and there are options for result page sizes
          or sorting.
@@ -184,7 +184,7 @@ class FDC:
         """
         req = self._call_foods_search(query, data_type, page_size, page_number, sort_by, sort_order, brand_owner)
         result_json = humps.decamelize(json.loads(req.text))
-        search_result = SearchResult.SearchResult(**result_json)
+        search_result = SearchResult(**result_json)
         return search_result
 
     def get_foods_search_raw(self, query: str, data_type: str = None, page_size: int = None, page_number: int = None,
@@ -214,20 +214,21 @@ class FDC:
     def _call_foods_search(self, query: str, data_type: str = None, page_size: int = None, page_number: int = None,
                            sort_by: str = None, sort_order: str = None, brand_owner: str = None) \
             -> requests.Response:
-        url = self.base_url + f"foods/search?api_key={self.api_key}&query={query}"
+        url = self.base_url + f"foods/search"
+        payload = {"api_key": self.api_key, "query": query}
         if data_type:
-            url += f"&dataType={data_type}"
+            payload["dataType"]=data_type
         if page_size:
-            url += f"&pageSize={page_size}"
+            payload["pageSize"] = page_size
         if page_number:
-            url += f"&pageNumber={page_number}"
+            payload["pageNumber"] = page_number
         if sort_by:
-            url += f"&sortBy={sort_by}"
+            payload["sortBy"] = sort_by
         if sort_order:
-            url += f"&sortOrder={sort_order}"
+            payload["sortOrder"] = sort_order
         if brand_owner:
-            url += f"&brandOwner={brand_owner}"
-        req = requests.get(url)
+            payload["brandOwner"] = brand_owner
+        req = requests.get(url, payload)
         if req.status_code != 200:
             req.raise_for_status()
         return req
@@ -256,7 +257,7 @@ class FDC:
             req.raise_for_status()
         return req.text
 
-    def _match_data_type(self, item: dict, _format: str) -> Food.Food:
+    def _match_data_type(self, item: dict, _format: str) -> Food:
         """
         Used to serialize the FoodItem properly.
         :param item: JSON of the food item.
@@ -265,21 +266,21 @@ class FDC:
         """
         food = None
         if _format == "abridged":
-            food = AbridgedFood.AbridgedFood(**item)
+            food = AbridgedFood(**item)
         elif item["data_type"] == "Branded":
-            food = BrandedFood.BrandedFood(**item)
+            food = BrandedFood(**item)
         elif item["data_type"] == "Foundation":
-            food = FoundationFood.FoundationFood(**item)
+            food = FoundationFood(**item)
         elif item["data_type"] == "SR Legacy":
-            food = SRLegacyFood.SRLegacyFood(**item)
+            food = SRLegacyFood(**item)
         elif item["data_type"] == "Survey (FNDDS)":
-            food = SurveyFood.SurveyFood(**item)
+            food = SurveyFood(**item)
         elif item["data_type"] == "Market Acquisition":
-            food = MarketAcquisitionFood.MarketAcquisitionFood(**item)
+            food = MarketAcquisitionFood(**item)
         elif item["data_type"] == "Sample":
-            food = SampleFood.SampleFood(**item)
+            food = SampleFood(**item)
         elif item["data_type"] == "Experimental":
-            food = ExperimentalFood.ExperimentalFood(**item)
+            food = ExperimentalFood(**item)
         else:
             print(f"Unexpected DataType: {item['data_type']}")
         return food
@@ -290,7 +291,7 @@ if __name__ == "__main__":
         json_file = json.load(file)
         key = json_file["api_key"]
     fdc = FDC(key)
-    x = fdc.get_foods_list_raw()
+    x = fdc.get_foods(["2262077", "2262077"])
     # for i in range(100):
     #    x = fdc.get_food(str(2262077 + i), format_="abridged")
     # x = fdc.get_foods(["2262077", "2262077"], "full")
