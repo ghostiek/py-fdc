@@ -32,7 +32,8 @@ class FDC:
             url += f"&nutrients={_nutrients}"
         req = requests.get(url)
         if req.status_code != 200:
-            req.raise_for_status()
+            #req.raise_for_status()
+            return ""
 
         item = humps.decamelize(json.loads(req.text))
         if raw:
@@ -73,6 +74,30 @@ class FDC:
 
         return foods
 
+    def get_json_specs(self) -> str:
+        """
+        The OpenAPI 3.0 specification for the FDC API rendered as JSON (JavaScript Object Notation)
+        :return: Returns the documentation found at https://app.swaggerhub.com/apis/fdcnal/food-data_central_api/1.0.1
+        in JSON notation
+        """
+        url = self.base_url + f"json-spec?api_key={self.api_key}"
+        req = requests.get(url)
+        if req.status_code != 200:
+            req.raise_for_status()
+        return req.text
+
+    def get_yaml_specs(self) -> str:
+        """
+        The OpenAPI 3.0 specification for the FDC API rendered as YAML (YAML Ain't Markup Language)
+        :return: Returns the documentation found at https://app.swaggerhub.com/apis/fdcnal/food-data_central_api/1.0.1
+        in YAML notation
+        """
+        url = self.base_url + f"yaml-spec?api_key={self.api_key}"
+        req = requests.get(url)
+        if req.status_code != 200:
+            req.raise_for_status()
+        return req.text
+
     def _match_data_type(self, item: dict, _format: str) -> Food.Food:
         """
         Used to serialize the FoodItem properly.
@@ -105,7 +130,8 @@ if __name__ == "__main__":
         json_file = json.load(file)
         key = json_file["api_key"]
     fdc = FDC(key)
-    for i in range(100):
-        x = fdc.get_food(str(2262077 + i))
+    x= fdc.get_yaml_specs()
+    #for i in range(100):
+    #    x = fdc.get_food(str(2262077 + i), _format="abridged")
     #x = fdc.get_foods(["2262077", "2262077"], "full")
     print(x)
