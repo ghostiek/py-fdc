@@ -54,48 +54,48 @@ class FDC:
             req.raise_for_status()
         return req
 
-    def get_foods(self, ids: List[str], _format: str = "full", _nutrients: List[int] = None) \
+    def get_foods(self, ids: List[str], format_: str = "full", _nutrients: List[int] = None) \
             -> List[Food.Food]:
         """
         Retrieves a list of food items by a list of up to 20 FDC IDs. Optional format and nutrients can be specified.
         Invalid FDC ID's or ones that are not found are omitted and an empty set is returned if there are no matches.
         :param ids: List of multiple FDC ID's
-        :param _format: Optional. 'abridged' for an abridged set of elements, 'full' for all elements (default).
-        :param _nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient
+        :param format_: Optional. 'abridged' for an abridged set of elements, 'full' for all elements (default).
+        :param nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient
         information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203,
         204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching
         nutrients, the food will be returned with an empty foodNutrients element.
         :return: List of `Food` Objects
         """
-        req = self._call_foods(ids, _format, _nutrients)
+        req = self._call_foods(ids, format_, _nutrients)
         result_json = humps.decamelize(json.loads(req.text))
         foods = []
         for item in result_json:
-            food = self._match_data_type(item, _format)
+            food = self._match_data_type(item, format_)
             foods.append(food)
         return foods
 
-    def get_foods_raw(self, ids: List[str], _format: str = "full", _nutrients: List[int] = None) -> str:
+    def get_foods_raw(self, ids: List[str], format_: str = "full", nutrients: List[int] = None) -> str:
         """
         Retrieves a list of food items by a list of up to 20 FDC IDs. Optional format and nutrients can be specified.
         Invalid FDC ID's or ones that are not found are omitted and an empty set is returned if there are no matches.
         :param ids: List of multiple FDC ID's
-        :param _format: Optional. 'abridged' for an abridged set of elements, 'full' for all elements (default).
-        :param _nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient
+        :param format_: Optional. 'abridged' for an abridged set of elements, 'full' for all elements (default).
+        :param nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient
         information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203,
         204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching
         nutrients, the food will be returned with an empty foodNutrients element.
         :return: List of `str` jsons
         """
-        req = self._call_foods(ids, _format, _nutrients)
+        req = self._call_foods(ids, format_, nutrients)
         return req.text
 
-    def _call_foods(self, ids: List[str], _format: str = "full", _nutrients: List[int] = None) -> requests.Response:
-        url = self.base_url + f"foods?api_key={self.api_key}&format={_format}"
+    def _call_foods(self, ids: List[str], format_: str = "full", nutrients: List[int] = None) -> requests.Response:
+        url = self.base_url + f"foods?api_key={self.api_key}&format={format_}"
         for fdc_id in ids:
             url += f"&fdcIds={fdc_id}"
-        if _nutrients:
-            url += f"&nutrients={_nutrients}"
+        if nutrients:
+            url += f"&nutrients={nutrients}"
         req = requests.get(url)
         if req.status_code != 200:
             req.raise_for_status()
@@ -292,6 +292,6 @@ if __name__ == "__main__":
     fdc = FDC(key)
     x = fdc.get_foods_list_raw()
     # for i in range(100):
-    #    x = fdc.get_food(str(2262077 + i), _format="abridged")
+    #    x = fdc.get_food(str(2262077 + i), format_="abridged")
     # x = fdc.get_foods(["2262077", "2262077"], "full")
     print(x)
