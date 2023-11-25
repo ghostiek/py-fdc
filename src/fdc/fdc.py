@@ -54,8 +54,7 @@ class FDC:
             req.raise_for_status()
         return req
 
-    def get_foods(self, ids: List[str], format_: str = "full", nutrients: List[int] = None) \
-            -> List[Food]:
+    def get_foods(self, ids: List[str], format_: str = "full", nutrients: List[int] = None) -> List[Food]:
         """
         Retrieves a list of food items by a list of up to 20 FDC IDs. Optional format and nutrients can be specified.
         Invalid FDC ID's or ones that are not found are omitted and an empty set is returned if there are no matches.
@@ -161,8 +160,7 @@ class FDC:
         return req
 
     def get_foods_search(self, query: str, data_type: str = None, page_size: int = None, page_number: int = None,
-                         sort_by: str = None, sort_order: str = None, brand_owner: str = None) \
-            -> SearchResult:
+                         sort_by: str = None, sort_order: str = None, brand_owner: str = None) -> SearchResult:
         """
         Search for foods using keywords. Results can be filtered by dataType and there are options for result page sizes
          or sorting.
@@ -212,8 +210,7 @@ class FDC:
         return req.text
 
     def _call_foods_search(self, query: str, data_type: str = None, page_size: int = None, page_number: int = None,
-                           sort_by: str = None, sort_order: str = None, brand_owner: str = None) \
-            -> requests.Response:
+                           sort_by: str = None, sort_order: str = None, brand_owner: str = None) -> requests.Response:
         url = self.base_url + f"foods/search"
         payload = {"api_key": self.api_key, "query": query}
         if data_type:
