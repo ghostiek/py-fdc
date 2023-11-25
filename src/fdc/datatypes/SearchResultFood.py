@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class SearchResultFood(Food):
-    def __init__(self, fdc_id: int, data_type: str, description: str, publication_date: str = None,
+    def __init__(self, fdc_id: int = None, data_type: str = None, description: str = None, publication_date: str = None,
                  food_nutrients: dict = None, ndb_number: int = None, brand_owner: str = None, gtin_upc: str = None,
                  food_code: str = None, scientific_name: str = None, ingredients: str = None,
                  additional_descriptions: str = None, all_highlight_fields: str = None, score: float = None):

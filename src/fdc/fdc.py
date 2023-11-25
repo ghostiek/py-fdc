@@ -219,7 +219,7 @@ if __name__ == "__main__":
         json_file = json.load(file)
         key = json_file["api_key"]
     fdc = FDC(key)
-    x = fdc.get_foods_search("cheese")
+    x = fdc.get_foods_search("cheese", "Branded", 200, 1, "dataType.keyword", "desc", "Kraft")
     # for i in range(100):
     #    x = fdc.get_food(str(2262077 + i), _format="abridged")
     # x = fdc.get_foods(["2262077", "2262077"], "full")
