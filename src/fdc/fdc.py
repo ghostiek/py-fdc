@@ -76,7 +76,7 @@ class FDC:
         return foods
 
     def get_foods_list(self, data_type: str = None, page_size: int = None, page_number: int = None, sort_by: str = None,
-                       sort_order: str = None, raw=False) -> str | list[Food]:
+                       sort_order: str = None, raw=False) -> str | list[AbridgedFood.AbridgedFood]:
         """
         Retrieves a paged list of foods. Use the pageNumber parameter to page through the entire result set.
         :param data_type: Optional. Filter on a specific data type; specify one or more values in an array.
@@ -89,7 +89,7 @@ class FDC:
         :param sort_order: Optional. The sort direction for the results. Only applicable if sortBy is specified.
         Can be any of the following `["asc", "desc"]`
         :param raw: Optional. Return the raw json string if True, else serialize the output
-        :return: List of Food objects or string
+        :return: List of AbridgedFood objects or string
         """
         url = self.base_url + f"foods/list?api_key={self.api_key}"
         if data_type:
@@ -110,7 +110,7 @@ class FDC:
             return req.text
         foods = []
         for item in result_json:
-            food = self._match_data_type(item, _format="full")
+            food = AbridgedFood.AbridgedFood(**item)
             foods.append(food)
         return foods
 
@@ -172,7 +172,7 @@ if __name__ == "__main__":
         json_file = json.load(file)
         key = json_file["api_key"]
     fdc = FDC(key)
-    x = fdc.get_foods_list("Foundation", 200, 2, "fdcId", "asc")
+    x = fdc.get_foods_list("Branded", 200, 2, "fdcId", "asc")
     # for i in range(100):
     #    x = fdc.get_food(str(2262077 + i), _format="abridged")
     # x = fdc.get_foods(["2262077", "2262077"], "full")

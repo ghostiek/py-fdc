@@ -27,13 +27,8 @@ class BrandedFood(Food):
         self.ingredients = ingredients
         self.modified_date = datetime.strptime(modified_date,
                                                "%m/%d/%Y").date() if modified_date else modified_date
-        try:
-            self.publication_date = datetime.strptime(publication_date,
+        self.publication_date = datetime.strptime(publication_date,
                                                   "%m/%d/%Y").date() if publication_date else publication_date
-        except ValueError:
-            # If we are using list_foods, we get a different format for some reason
-            self.publication_date = datetime.strptime(publication_date,
-                                                      "%Y-%m-%d").date() if publication_date else publication_date
         self.serving_size = serving_size
         self.serving_size_unit = serving_size_unit
         self.preparation_state_code = preparation_state_code

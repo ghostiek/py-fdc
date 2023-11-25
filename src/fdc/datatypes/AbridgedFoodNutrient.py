@@ -2,8 +2,8 @@ from .Nutrient import Nutrient
 
 
 class AbridgedFoodNutrient:
-    def __init__(self, number: int, name: str, amount: float, unit_name: str, derivation_code: str,
-                 derivation_description: str):
+    def __init__(self, number: int = None, name: str = None, amount: float = None, unit_name: str = None, derivation_code: str = None,
+                 derivation_description: str = None):
         """
         Abridged Food Nutrient
         :param number: ID of Nutrient

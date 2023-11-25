@@ -10,7 +10,7 @@ from datetime import datetime
 class SurveyFood(Food):
     def __init__(self, fdc_id: int, data_type: str, description: str, start_date:str = None, end_date: str = None, food_class: str = None, food_code: str = None,
                  publication_date: str = None, food_portion: dict = None, input_foods: dict = None,
-                 wweia_food_category: dict = None, food_attributes: list = None, food_nutrients: dict = None):
+                 wweia_food_category: dict = None, food_attributes: list = None):
         super().__init__()
         self.fdc_id = fdc_id
         self.data_type = data_type
@@ -29,6 +29,3 @@ class SurveyFood(Food):
         self.input_foods = [InputFoodSurvey(**input_food) for input_food in input_foods] if input_foods else input_foods
         self.food_attributes = [FoodAttribute(**food_attribute) for food_attribute in food_attributes] if food_attributes else food_attributes
         self.wweia_food_category = WweiaFoodCategory(**wweia_food_category) if wweia_food_category else wweia_food_category
-
-        # Not in schema but need to be added
-        self.food_nutrients = [FoodNutrient(**food_nutrient) for food_nutrient in food_nutrients]
