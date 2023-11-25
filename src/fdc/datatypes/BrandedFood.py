@@ -27,14 +27,19 @@ class BrandedFood(Food):
         self.ingredients = ingredients
         self.modified_date = datetime.strptime(modified_date,
                                                "%m/%d/%Y").date() if modified_date else modified_date
-        self.publication_date = datetime.strptime(publication_date,
+        try:
+            self.publication_date = datetime.strptime(publication_date,
                                                   "%m/%d/%Y").date() if publication_date else publication_date
+        except ValueError:
+            # If we are using list_foods, we get a different format for some reason
+            self.publication_date = datetime.strptime(publication_date,
+                                                      "%Y-%m-%d").date() if publication_date else publication_date
         self.serving_size = serving_size
         self.serving_size_unit = serving_size_unit
         self.preparation_state_code = preparation_state_code
         self.branded_food_category = branded_food_category
         self.trade_channel = trade_channel
         self.gpc_class_code = gpc_class_code
-        self.food_nutrients = [FoodNutrient(**food_nutrient) for food_nutrient in food_nutrients]
+        self.food_nutrients = [FoodNutrient(**food_nutrient) for food_nutrient in food_nutrients] if food_nutrients else food_nutrients
         self.food_update_log = FoodUpdateLog(**food_update_log) if food_update_log else food_update_log
         self.label_nutrients = LabelNutrient(**label_nutrient) if label_nutrient else label_nutrient
