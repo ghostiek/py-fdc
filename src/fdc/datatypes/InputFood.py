@@ -1,4 +1,5 @@
 from .FoodGroup import FoodGroup
+from .FoodAttributeType import FoodAttributeType
 
 
 class InputFood:
@@ -6,7 +7,7 @@ class InputFood:
         self.fdc_id = fdc_id
         self.description = description
         self.publication_date = publication_date
-        self.food_attribute_types = food_attribute_types
+        self.food_attribute_types = [FoodAttributeType(**food_attribute_type) for food_attribute_type in food_attribute_types] if food_attribute_types else food_attribute_types
         self.food_class = food_class
         self.total_refuse = total_refuse
         self.data_type = data_type

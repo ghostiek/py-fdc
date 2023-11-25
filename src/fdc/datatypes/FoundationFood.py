@@ -4,6 +4,7 @@ from .FoodComponent import FoodComponent
 from .FoodNutrient import FoodNutrient
 from .InputFoods import InputFoods
 from .NutrientConversionFactor import NutrientConversionFactor
+from .FoodAttribute import FoodAttribute
 
 
 class FoundationFood:
@@ -31,6 +32,6 @@ class FoundationFood:
         self.nutrient_conversion_factors = [NutrientConversionFactor(**nutrient_conversion_factor) for
                                             nutrient_conversion_factor in nutrient_conversion_factors]
         # Wasn't included in the schema but seems to be returned
-        self.food_attributes = food_attributes
+        self.food_attributes = [FoodAttribute(**food_attribute) for food_attribute in food_attributes] if food_attributes else food_attributes
 
 
