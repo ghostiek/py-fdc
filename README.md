@@ -1,2 +1,29 @@
 # py-fdc
 A python interface to interact with the USDA's FoodDataCentral API
+
+## Usage
+
+```python
+from fdc import FDC
+
+# Initialize the client with your API key
+client = FDC(api_key)
+
+# Get Food using FDCId
+food = client.get_food(fdc_id)
+
+# Get multiple Foods using a list of FDCIds
+foods = client.get_foods([fdc_id1, fdc_id2, fdc_id3])
+
+# The USDA's FoodDataCentral API can be quite inconsistent at times, I've tried mapping it the best I could but if it
+# results in an error, you can always just get the json string using the raw parameter
+food_raw = client.get_food(fdc_id, raw=True)
+
+# Get a paged list of foods
+food_list = client.get_foods_list()
+
+# Search foods using keywords, in this case, get 200 cheese items
+cheeses = client.get_foods_search("cheese")
+```
+
+

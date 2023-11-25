@@ -254,6 +254,9 @@ cython_debug/
 #.idea/
 
 
-#testing
+#testing purposes
 config.json
+
+#pdm
+.pdm-build
 
