@@ -24,7 +24,7 @@ class FDC:
         204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching
         nutrients, the food will be returned with an empty foodNutrients element.
         :param raw: Optional. Return the raw json string if True, else serialize the output
-        :return: Food or AbridgedFood object
+        :return: Food object
         """
 
         url = self.base_url + f"food/{str(id)}?api_key={self.api_key}&format={_format}"
@@ -52,7 +52,7 @@ class FDC:
         204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching
         nutrients, the food will be returned with an empty foodNutrients element.
         :param raw: Optional. Return the raw json string if True, else serialize the output
-        :return: List of FoundationFood, AbridgedFood, SRLegacyFood, BrandedFood, or SurveryFood objects
+        :return: List of Food Objects
         """
         url = self.base_url + f"foods?api_key={self.api_key}&format={_format}"
         for fdc_id in ids:
@@ -73,7 +73,13 @@ class FDC:
 
         return foods
 
-    def _match_data_type(self, item, _format):
+    def _match_data_type(self, item: dict, _format: str) -> Food.Food:
+        """
+        Used to serialize the FoodItem properly.
+        :param item: JSON of the food item.
+        :param _format: Was the query Full or Abridged
+        :return: A `Food` class
+        """
         food = None
         if _format == "abridged":
             food = AbridgedFood.AbridgedFood(**item)
