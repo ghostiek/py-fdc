@@ -1,5 +1,5 @@
 import json
-from datatypes import Food, AbridgedFood, FoundationFood, MarketAcquisitionFood
+from datatypes import Food, AbridgedFood, FoundationFood, MarketAcquisitionFood, SampleFood
 import requests
 import humps
 from typing import List
@@ -35,26 +35,10 @@ class FDC:
         if req.status_code != 200:
             req.raise_for_status()
 
-        result_json = humps.decamelize(json.loads(req.text))
-        food = None
+        item = humps.decamelize(json.loads(req.text))
         if raw:
             return req.text
-        elif _format == "abridged":
-            food = AbridgedFood.AbridgedFood(**result_json)
-        elif result_json["data_type"] == "Foundation":
-            food = FoundationFood.FoundationFood(**result_json)
-        elif result_json["data_type"] == "Branded":
-            pass
-        elif result_json["data_type"] == "Foundation":
-            food = FoundationFood.FoundationFood(**result_json)
-        elif result_json["data_type"] == "SR Legacy":
-            pass
-        elif result_json["data_type"] == "Survey (FNDDS)":
-            pass
-        elif result_json["data_type"] == "Market Acquisition":
-            food = MarketAcquisitionFood.MarketAcquisitionFood(**result_json)
-        else:
-            print(f"Unexpected DataType: {result_json['data_type']}")
+        food = self._match_data_type(item, _format)
         return food
 
     def get_foods(self, ids: List[str], _format: str = "full", _nutrients: List[int] = None, raw: bool = False) \
@@ -86,22 +70,33 @@ class FDC:
             return req.text
         foods = []
         for item in result_json:
-            if _format == "abridged":
-                foods.append(AbridgedFood.AbridgedFood(**result_json))
-            elif item["data_type"] == "Branded":
-                pass
-            elif item["data_type"] == "Foundation":
-                foods.append(FoundationFood.FoundationFood(**item))
-            elif item["data_type"] == "SR Legacy":
-                pass
-            elif item["data_type"] == "Survey (FNDDS)":
-                pass
-            elif item["data_type"] == "Market Acquisition":
-                foods.append(MarketAcquisitionFood.MarketAcquisitionFood(**item))
-            else:
-                print(f"Unexpected DataType: {item['data_type']}")
-                foods.append(None)
+            food = self._match_data_type(item, _format)
+            foods.append(food)
+
         return foods
+
+    def _match_data_type(self, item, _format):
+        food = None
+        if _format == "abridged":
+            food = AbridgedFood.AbridgedFood(**item)
+        elif item["data_type"] == "Branded":
+            pass
+        elif item["data_type"] == "Foundation":
+            food = FoundationFood.FoundationFood(**item)
+        elif item["data_type"] == "SR Legacy":
+            pass
+        elif item["data_type"] == "Survey (FNDDS)":
+            pass
+        elif item["data_type"] == "Market Acquisition":
+            food = MarketAcquisitionFood.MarketAcquisitionFood(**item)
+        elif item["data_type"] == "Sample":
+            food = SampleFood.SampleFood(**item)
+        else:
+            print(f"Unexpected DataType: {item['data_type']}")
+        return food
+
+
+
 
 
 if __name__ == "__main__":
@@ -109,5 +104,7 @@ if __name__ == "__main__":
         json_file = json.load(file)
         key = json_file["api_key"]
     fdc = FDC(key)
-    x = fdc.get_foods(["2262075", "2262076"], "full")
+    for i in range(100):
+        x = fdc.get_food(str(2262077 + i))
+    #x = fdc.get_foods(["2262077", "2262077"], "full")
     print(x)

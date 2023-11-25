@@ -23,4 +23,4 @@ class MarketAcquisitionFood:
         self.store_state = store_state
         self.upc_code = upc_code
         self.food_category = FoodCategory(**food_category) if food_category else None
-        self.publication_date = datetime.strptime(acquisition_date, "%m/%d/%Y").date()
+        self.publication_date = datetime.strptime(publication_date, "%m/%d/%Y").date()

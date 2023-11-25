@@ -2,8 +2,8 @@ from .FoodNutrientSource import FoodNutrientSource
 
 
 class FoodNutritionDerivation:
-    def __init__(self, id: int, code: str, description: str, food_nutrient_source: dict):
+    def __init__(self, id: int, code: str, description: str, food_nutrient_source: dict = None):
         self.id = id
         self.code = code
         self.description = description
-        self.food_nutrient_source = FoodNutrientSource(**food_nutrient_source)
+        self.food_nutrient_source = FoodNutrientSource(**food_nutrient_source) if food_nutrient_source else food_nutrient_source
