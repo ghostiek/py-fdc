@@ -1,6 +1,13 @@
 # py-fdc
 A python interface to interact with the USDA's FoodDataCentral API
 
+## Requirements
+- Python >=3.10 
+
+## Dependencies
+- [requests](https://pypi.org/project/requests/)
+- [pyhumps](https://pypi.org/project/pyhumps/)
+
 ## Usage
 
 ```python
@@ -25,5 +32,8 @@ food_list = client.get_foods_list()
 # Search foods using keywords, in this case, get 200 cheese items
 cheeses = client.get_foods_search("cheese")
 ```
+
+## API Documentation
+More information about the API is available [here](https://app.swaggerhub.com/apis/fdcnal/food-data_central_api/1.0.1)
 
 
