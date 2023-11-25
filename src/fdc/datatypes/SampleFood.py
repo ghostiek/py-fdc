@@ -4,12 +4,14 @@ from .FoodNutrient import FoodNutrient
 from .FoodCategory import FoodCategory
 from .FoodAttribute import FoodAttribute
 from .FoodPortion import FoodPortion
+from .Food import Food
 
 
-class SampleFood:
+class SampleFood(Food):
     def __init__(self, fdc_id: int, data_type: str, description: str, food_class: str = None,
                  food_attributes: list = None, food_nutrients: str = None, food_portions: list = None,
                  food_components: list = None, food_category: dict = None, publication_date: str = None):
+        super().__init__()
         self.fdc_id = fdc_id
         self.description = description
         self.publication_date = datetime.strptime(publication_date, "%m/%d/%Y").date()

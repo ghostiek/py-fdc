@@ -1,5 +1,5 @@
 import json
-from datatypes import Food, AbridgedFood, FoundationFood, MarketAcquisitionFood, SampleFood
+from datatypes import AbridgedFood, FoundationFood, MarketAcquisitionFood, SampleFood, BrandedFood, SRLegacyFood, SurveyFood, Food
 import requests
 import humps
 from typing import List
@@ -12,8 +12,7 @@ class FDC:
 
     def get_food(self, id: str, _format: str = "full",
                  _nutrients: List[int] = None, raw: bool = False) \
-            -> str | FoundationFood.FoundationFood | AbridgedFood.AbridgedFood | \
-               MarketAcquisitionFood.MarketAcquisitionFood:
+            -> str | Food.Food:
         """
         Retrieves a single food item by an FDC ID. Optional format and nutrients can be specified.
         :param id: FDC id
@@ -42,8 +41,7 @@ class FDC:
         return food
 
     def get_foods(self, ids: List[str], _format: str = "full", _nutrients: List[int] = None, raw: bool = False) \
-            -> str | List[FoundationFood.FoundationFood] | List[AbridgedFood.AbridgedFood] | \
-               List[MarketAcquisitionFood.MarketAcquisitionFood]:
+            -> str | List[Food.Food]:
         """
         Retrieves a list of food items by a list of up to 20 FDC IDs. Optional format and nutrients can be specified.
         Invalid FDC ID's or ones that are not found are omitted and an empty set is returned if there are no matches.
@@ -80,13 +78,13 @@ class FDC:
         if _format == "abridged":
             food = AbridgedFood.AbridgedFood(**item)
         elif item["data_type"] == "Branded":
-            pass
+            food = BrandedFood.BrandedFood(**item)
         elif item["data_type"] == "Foundation":
             food = FoundationFood.FoundationFood(**item)
         elif item["data_type"] == "SR Legacy":
-            pass
+            food = SRLegacyFood.SRLegacyFood(**item)
         elif item["data_type"] == "Survey (FNDDS)":
-            pass
+            food = SurveyFood.SurveyFood(**item)
         elif item["data_type"] == "Market Acquisition":
             food = MarketAcquisitionFood.MarketAcquisitionFood(**item)
         elif item["data_type"] == "Sample":
@@ -94,9 +92,6 @@ class FDC:
         else:
             print(f"Unexpected DataType: {item['data_type']}")
         return food
-
-
-
 
 
 if __name__ == "__main__":

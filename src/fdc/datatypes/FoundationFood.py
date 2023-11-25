@@ -5,14 +5,16 @@ from .FoodNutrient import FoodNutrient
 from .InputFoods import InputFoods
 from .NutrientConversionFactor import NutrientConversionFactor
 from .FoodAttribute import FoodAttribute
+from .Food import Food
 
 
-class FoundationFood:
+class FoundationFood(Food):
     def __init__(self, fdc_id: int, data_type: str, description: str, food_class: str = None, foot_note: str = None,
                  is_historical_reference: bool = None, ndb_number: int = None, publication_date: str = None,
                  scientific_name: str = None, food_category: dict = None, food_components: dict = None,
                  food_nutrients: dict = None, food_portion: dict = None, input_foods: dict = None,
                  nutrient_conversion_factors: dict = None, food_attributes: list = None):
+        super().__init__()
         self.fdc_id = fdc_id
         self.data_type = data_type
         self.description = description

@@ -1,9 +1,9 @@
 from .AbridgedFoodNutrient import AbridgedFoodNutrient
-
+from .Food import Food
 from datetime import datetime
 
 
-class AbridgedFood:
+class AbridgedFood(Food):
     def __init__(self, fdc_id: int, data_type: str, description: str, publication_date: str = None,
                  food_nutrients: dict = None, ndb_number: int = None, brand_owner: str = None, gtin_upc: str = None,
                  food_code: str = None):
@@ -30,6 +30,7 @@ class AbridgedFood:
         dietary data. Users can search for a food in FNDDS either by its name or its food code. Only applies to
         Survey Foods
         """
+        super().__init__()
         self.fdc_id = fdc_id
         self.description = description
         # Just using the if statements to avoid NoneType exceptions
