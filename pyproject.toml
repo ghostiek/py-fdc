@@ -8,6 +8,11 @@ description = "A Python interface to interact with the USDA's FoodDataCentral AP
 readme = "README.md"
 requires-python = ">=3.10"
 
+dependencies = [
+  "requests",
+  "pyhumps"
+]
+
 [project.urls]
 Homepage = "https://github.com/ghostiek/py-fdc"
 Issues = "https://github.com/ghostiek/py-fdc/issues"
