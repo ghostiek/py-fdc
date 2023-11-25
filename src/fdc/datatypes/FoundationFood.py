@@ -5,6 +5,7 @@ from .FoodNutrient import FoodNutrient
 from .InputFoods import InputFoods
 from .NutrientConversionFactor import NutrientConversionFactor
 from .FoodAttribute import FoodAttribute
+from .FoodPortion import FoodPortion
 from .Food import Food
 
 
@@ -27,8 +28,7 @@ class FoundationFood(Food):
         self.food_category = FoodCategory(**food_category) if food_category else None
         self.food_components = FoodComponent(**food_components) if food_components else None
         self.food_nutrients = [FoodNutrient(**food_nutrient) for food_nutrient in food_nutrients]
-        #fix this
-        self.food_portion = food_portion
+        self.food_portion = FoodPortion(**food_portion) if food_portion else food_portion
         self.input_foods = [InputFoods(**input_food) for input_food in input_foods]
 
         self.nutrient_conversion_factors = [NutrientConversionFactor(**nutrient_conversion_factor) for

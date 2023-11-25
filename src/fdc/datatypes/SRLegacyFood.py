@@ -24,4 +24,3 @@ class SRLegacyFood(Food):
         self.food_nutrients = [FoodNutrient(**food_nutrient) for food_nutrient in food_nutrients]
         self.nutrient_conversion_factors = [NutrientConversionFactor(**nutrient_conversion_factor) for
                                             nutrient_conversion_factor in nutrient_conversion_factors]
-        
