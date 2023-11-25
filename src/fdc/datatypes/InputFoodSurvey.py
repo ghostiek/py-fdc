@@ -6,7 +6,7 @@ class InputFoodSurvey:
     def __init__(self, id: int = None, amount:str = None, food_description: str = None, ingredient_code: int = None,
                  ingredient_description:str = None, ingredient_weight: float = None, portion_code: str = None,
                  portion_description: str = None, sequence_number: int = None, survey_flag: int = None,
-                 unit: str = None, input_food: dict = None, retention_factor: dict = None)
+                 unit: str = None, input_food: dict = None, retention_factor: dict = None):
         self.id = id
         self.amount = amount
         self.food_description = food_description
