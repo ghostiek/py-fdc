@@ -1,5 +1,5 @@
 import json
-from src.fdc.datatypes import AbridgedFood, FoundationFood, MarketAcquisitionFood, SampleFood, BrandedFood,\
+from .datatypes import AbridgedFood, FoundationFood, MarketAcquisitionFood, SampleFood, BrandedFood,\
     SRLegacyFood, SurveyFood, Food, ExperimentalFood, SearchResult
 import requests
 import humps
