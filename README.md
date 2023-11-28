@@ -12,6 +12,11 @@ A python interface to interact with the USDA's FoodDataCentral API
 - [pyhumps](https://pypi.org/project/pyhumps/)
 - [pytest](https://pypi.org/project/pytest/)
 
+## Installation
+```bash
+pip install git+https://github.com/ghostiek/py-fdc.git
+```
+
 ## Getting Started
 
 ### Get an API Key
