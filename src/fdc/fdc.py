@@ -1,6 +1,6 @@
 import json
-from datatypes import AbridgedFood, FoundationFood, MarketAcquisitionFood, SampleFood, BrandedFood, SRLegacyFood, \
-    SurveyFood, Food, ExperimentalFood, SearchResult
+from src.fdc.datatypes import AbridgedFood, FoundationFood, MarketAcquisitionFood, SampleFood, BrandedFood,\
+    SRLegacyFood, SurveyFood, Food, ExperimentalFood, SearchResult
 import requests
 import humps
 from typing import List
@@ -92,9 +92,7 @@ class FDC:
 
     def _call_foods(self, ids: List[str], format_: str = "full", nutrients: List[int] = None) -> requests.Response:
         url = self.base_url + f"foods"
-        payload = {"api_key": self.api_key, "format": format_}
-        for fdc_id in ids:
-            payload["fdcIds"] = fdc_id
+        payload = {"api_key": self.api_key, "format": format_, "fdcIds": ids}
         if nutrients:
             payload["nutrients"] = nutrients
         req = requests.get(url, payload)
@@ -284,15 +282,3 @@ class FDC:
         else:
             print(f"Unexpected DataType: {item['data_type']}")
         return food
-
-
-if __name__ == "__main__":
-    with open("../../config.json", "r") as file:
-        json_file = json.load(file)
-        key = json_file["api_key"]
-    fdc = FDC(key)
-    x = fdc.get_foods_list()
-    # for i in range(100):
-    #    x = fdc.get_food(str(2262077 + i), format_="abridged")
-    # x = fdc.get_foods(["2262077", "2262077"], "full")
-    print(x)
