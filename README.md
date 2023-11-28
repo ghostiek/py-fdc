@@ -21,7 +21,7 @@ An API Key is necessary to make calls to USDA's API. You can get one by filling 
 
 ```python
 # Import the FDC module
-from fdc import FDC
+from fdc.fdc import FDC
 
 # Initialize the client with your API key
 client = FDC(api_key)
