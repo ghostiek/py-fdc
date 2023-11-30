@@ -13,4 +13,3 @@ class TestDataclass:
     def test_repr(self):
         x = AbridgedFood(**self.tmp).__repr__()
         assert "AbridgedFood()" == x
-        
