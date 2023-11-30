@@ -1,8 +1,10 @@
 from .AbridgedFoodNutrient import AbridgedFoodNutrient
 from .Food import Food
 from datetime import datetime
+from dataclasses import dataclass
 
 
+@dataclass()
 class AbridgedFood(Food):
     def __init__(self, fdc_id: int, data_type: str, description: str, publication_date: str = None,
                  food_nutrients: dict = None, ndb_number: int = None, brand_owner: str = None, gtin_upc: str = None,

@@ -1,6 +1,7 @@
-from .Nutrient import Nutrient
+from dataclasses import dataclass
 
 
+@dataclass()
 class AbridgedFoodNutrient:
     def __init__(self, number: int = None, name: str = None, amount: float = None, unit_name: str = None, derivation_code: str = None,
                  derivation_description: str = None):

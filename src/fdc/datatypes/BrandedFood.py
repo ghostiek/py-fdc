@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 from .FoodNutrient import FoodNutrient
 from .FoodUpdateLog import FoodUpdateLog
@@ -5,6 +6,7 @@ from .LabelNutrient import LabelNutrient
 from .Food import Food
 
 
+@dataclass()
 class BrandedFood(Food):
     def __init__(self, fdc_id: int, data_type: str, description: str, food_class: str = None,
                  publication_date: str = None, food_nutrients: dict = None, available_date: str = None,
@@ -35,6 +37,7 @@ class BrandedFood(Food):
         self.branded_food_category = branded_food_category
         self.trade_channel = trade_channel
         self.gpc_class_code = gpc_class_code
-        self.food_nutrients = [FoodNutrient(**food_nutrient) for food_nutrient in food_nutrients] if food_nutrients else food_nutrients
+        self.food_nutrients = [FoodNutrient(**food_nutrient) for food_nutrient in
+                               food_nutrients] if food_nutrients else food_nutrients
         self.food_update_log = FoodUpdateLog(**food_update_log) if food_update_log else food_update_log
         self.label_nutrients = LabelNutrient(**label_nutrient) if label_nutrient else label_nutrient

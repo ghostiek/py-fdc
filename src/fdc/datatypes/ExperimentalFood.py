@@ -1,7 +1,9 @@
+from dataclasses import dataclass
 from datetime import datetime
 from .FoodNutrient import FoodNutrient
 
 
+@dataclass()
 class ExperimentalFood:
     def __init__(self, fdc_id: int = None, description:str = None, data_type:str = None, publication_date: str = None,
                  food_nutrients: list = None):

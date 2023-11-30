@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 from .FoodCategory import FoodCategory
 from .FoodComponent import FoodComponent
@@ -9,6 +10,7 @@ from .FoodPortion import FoodPortion
 from .Food import Food
 
 
+@dataclass()
 class FoundationFood(Food):
     def __init__(self, fdc_id: int, data_type: str, description: str, food_class: str = None, foot_note: str = None,
                  is_historical_reference: bool = None, ndb_number: int = None, publication_date: str = None,
@@ -38,8 +40,8 @@ class FoundationFood(Food):
         self.input_foods = [InputFoods(**input_food) for input_food in input_foods] if input_foods else input_foods
 
         self.nutrient_conversion_factors = [NutrientConversionFactor(**nutrient_conversion_factor) for
-                                            nutrient_conversion_factor in nutrient_conversion_factors] if nutrient_conversion_factors else nutrient_conversion_factors
+                                            nutrient_conversion_factor in
+                                            nutrient_conversion_factors] if nutrient_conversion_factors else nutrient_conversion_factors
         # Wasn't included in the schema but seems to be returned
-        self.food_attributes = [FoodAttribute(**food_attribute) for food_attribute in food_attributes] if food_attributes else food_attributes
-
-
+        self.food_attributes = [FoodAttribute(**food_attribute) for food_attribute in
+                                food_attributes] if food_attributes else food_attributes

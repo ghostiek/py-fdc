@@ -1,3 +1,7 @@
+from dataclasses import dataclass
+
+
+@dataclass()
 class FoodComponent:
     def __init__(self, id: int, name: str, data_points: int, gram_weight: int, is_refuse: bool, min_year_acquired: int,
                  percent_weight: float):

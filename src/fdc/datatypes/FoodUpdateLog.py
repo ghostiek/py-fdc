@@ -1,7 +1,9 @@
+from dataclasses import dataclass
 from datetime import datetime
 from .FoodAttribute import FoodAttribute
 
 
+@dataclass()
 class FoodUpdateLog:
     def __init__(self, fdc_id: int, data_type: str, description: str, food_class: str = None,
                  publication_date: str = None, food_nutrients: dict = None, available_date: str = None,
@@ -28,4 +30,5 @@ class FoodUpdateLog:
         self.serving_size_unit = serving_size_unit
         self.branded_food_category = branded_food_category
         self.changes = changes
-        self.food_attributes = [FoodAttribute(**food_attribute) for food_attribute in food_attributes] if food_attributes else food_attributes
+        self.food_attributes = [FoodAttribute(**food_attribute) for food_attribute in
+                                food_attributes] if food_attributes else food_attributes

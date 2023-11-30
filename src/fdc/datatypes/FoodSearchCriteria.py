@@ -1,3 +1,7 @@
+from dataclasses import dataclass
+
+
+@dataclass()
 class FoodSearchCriteria:
     def __init__(self, query: str, data_type: str = None, page_size: int = None, page_number: int = None,
                  sort_by: str = None, sort_order: str = None, brand_owner: str = None, trade_channel: list[str] = None,

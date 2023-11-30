@@ -1,6 +1,9 @@
+from dataclasses import dataclass
+
 from .NutrientAcquisitionDetails import NutrientAcquisitionDetails
 
 
+@dataclass()
 class NutrientAnalysisDetails:
     def __init__(self, sub_sample_id: int, amount: float, nutrient_id: int, lab_method_description: str,
                  lab_method_original_description: str, lab_method_link: str, lab_method_technique: str,

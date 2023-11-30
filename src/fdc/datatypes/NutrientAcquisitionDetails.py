@@ -1,6 +1,8 @@
+from dataclasses import dataclass
 from datetime import datetime
 
 
+@dataclass()
 class NutrientAcquisitionDetails:
     def __init__(self, sample_unit_id: int, purchase_date: str, store_city: str, store_state: str,
                  packer_city: str = None, packer_state: str = None):

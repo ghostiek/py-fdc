@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 from .FoodComponent import FoodComponent
 from .FoodNutrient import FoodNutrient
@@ -7,6 +8,7 @@ from .FoodPortion import FoodPortion
 from .Food import Food
 
 
+@dataclass()
 class SampleFood(Food):
     def __init__(self, fdc_id: int, data_type: str, description: str, food_class: str = None,
                  food_attributes: list = None, food_nutrients: str = None, food_portions: list = None,
@@ -14,7 +16,7 @@ class SampleFood(Food):
         super().__init__()
         self.fdc_id = fdc_id
         self.description = description
-        self.publication_date = datetime.strptime(publication_date, "%m/%d/%Y").date()
+        self.publication_date = datetime.strptime(publication_date, "%m/%d/%Y").date() if publication_date else publication_date
         self.data_type = data_type
         self.food_class = food_class
         self.food_components = [FoodComponent(**i) for i in food_components] if food_components else food_components

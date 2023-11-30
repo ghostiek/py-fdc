@@ -1,7 +1,10 @@
+from dataclasses import dataclass
+
 from .FoodSearchCriteria import FoodSearchCriteria
 from .SearchResultFood import SearchResultFood
 
 
+@dataclass()
 class SearchResult:
     def __init__(self, food_search_criteria: dict, total_hits: int = None, current_page: int = None,
                  total_pages: int = None, foods: list[dict] = None, page_list: list[int] = None,

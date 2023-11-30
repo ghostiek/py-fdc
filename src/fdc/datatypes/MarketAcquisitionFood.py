@@ -1,7 +1,9 @@
+from dataclasses import dataclass
 from datetime import datetime
 from .FoodCategory import FoodCategory
 
 
+@dataclass()
 class MarketAcquisitionFood:
     def __init__(self, fdc_id: int, data_type: str, description: str, food_class: str = None, store_city: str = None,
                  label_weight: str = None, location: str = None, acquisition_date: str = None,

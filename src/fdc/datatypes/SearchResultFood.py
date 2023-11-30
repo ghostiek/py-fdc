@@ -1,8 +1,11 @@
+from dataclasses import dataclass
+
 from .Food import Food
 from .FoodNutrient import FoodNutrient
 from datetime import datetime
 
 
+@dataclass()
 class SearchResultFood(Food):
     def __init__(self, fdc_id: int = None, data_type: str = None, description: str = None, publication_date: str = None,
                  food_nutrients: dict = None, ndb_number: int = None, brand_owner: str = None, gtin_upc: str = None,
@@ -25,4 +28,3 @@ class SearchResultFood(Food):
         self.additional_descriptions = additional_descriptions
         self.all_highlight_fields = all_highlight_fields
         self.score = score
-

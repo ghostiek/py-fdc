@@ -1,3 +1,7 @@
+from dataclasses import dataclass
+
+
+@dataclass()
 class LabelNutrient:
     def __init__(self, fat: dict = None, saturated_fat: dict = None, trans_fat: dict = None, cholesterol: dict = None,
                  sodium: dict = None, carbohydrates: dict = None, fiber: dict = None, sugars: dict = None,
