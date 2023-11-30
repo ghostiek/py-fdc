@@ -1,6 +1,3 @@
-import pytest
-import os
-from src.fdc.fdc import FDC
 from src.fdc.datatypes import *
 
 
@@ -12,3 +9,8 @@ class TestDataclass:
         x = AbridgedFood(**self.tmp)
         y = AbridgedFood(**self.tmp)
         assert x == y
+
+    def test_repr(self):
+        x = AbridgedFood(**self.tmp).__repr__()
+        assert "AbridgedFood()" == x
+        
