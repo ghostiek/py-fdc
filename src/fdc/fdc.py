@@ -14,6 +14,7 @@ class FDC:
     def get_food(self, id_: str, format_: str = "full", nutrients: List[int] = None) -> Food:
         """
         Retrieves a single food item by an FDC ID. Optional format and nutrients can be specified.
+
         :param id\_: FDC id of the food to retrieve
         :param format\_: Optional. 'abridged' for an abridged set of elements, 'full' for all elements (default).
         :param nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203, 204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching nutrients, the food will be returned with an empty foodNutrients element.
@@ -27,6 +28,7 @@ class FDC:
     def get_food_raw(self, id_: str, format_: str = "full", nutrients: List[int] = None) -> str:
         """
         Retrieves a single food item by an FDC ID. Optional format and nutrients can be specified.
+
         :param id\_: FDC id of the food to retrieve
         :param format\_: Optional. 'abridged' for an abridged set of elements, 'full' for all elements (default).
         :param nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203, 204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching nutrients, the food will be returned with an empty foodNutrients element.
@@ -48,6 +50,7 @@ class FDC:
     def get_foods(self, ids: List[str], format_: str = "full", nutrients: List[int] = None) -> List[Food]:
         """
         Retrieves a list of food items by a list of up to 20 FDC IDs. Optional format and nutrients can be specified. Invalid FDC ID's or ones that are not found are omitted and an empty set is returned if there are no matches.
+
         :param ids: List of multiple FDC ID's
         :param format\_: Optional. 'abridged' for an abridged set of elements, 'full' for all elements (default).
         :param nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203, 204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching nutrients, the food will be returned with an empty foodNutrients element.
@@ -64,6 +67,7 @@ class FDC:
     def get_foods_raw(self, ids: List[str], format_: str = "full", nutrients: List[int] = None) -> str:
         """
         Retrieves a list of food items by a list of up to 20 FDC IDs. Optional format and nutrients can be specified. Invalid FDC ID's or ones that are not found are omitted and an empty set is returned if there are no matches.
+
         :param ids: List of multiple FDC ID's
         :param format\_: Optional. 'abridged' for an abridged set of elements, 'full' for all elements (default).
         :param nutrients: Optional. List of up to 25 nutrient numbers. Only the nutrient information for the specified nutrients will be returned. Should be comma separated list (e.g. nutrients=203, 204) or repeating parameters (e.g. nutrients=203&nutrients=204). If a food does not have any matching nutrients, the food will be returned with an empty foodNutrients element.
@@ -86,6 +90,7 @@ class FDC:
                        sort_order: str = None) -> list[AbridgedFood]:
         """
         Retrieves a paged list of foods. Use the pageNumber parameter to page through the entire result set.
+
         :param data_type: Optional. Filter on a specific data type; specify one or more values in an array.
         :param page_size: Optional. Maximum number of results to return for the current page. Default is 50. Min=1, Max=200
         :param page_number: Optional. Page number to retrieve. The offset into the overall result set is expressed as (pageNumber * pageSize)
@@ -105,6 +110,7 @@ class FDC:
                            sort_by: str = None, sort_order: str = None) -> str:
         """
         Retrieves a paged list of foods. Use the pageNumber parameter to page through the entire result set.
+
         :param data_type: Optional. Filter on a specific data type; specify one or more values in an array.
         :param page_size: Optional. Maximum number of results to return for the current page. Default is 50. Min=1, Max=200
         :param page_number: Optional. Page number to retrieve. The offset into the overall result set is expressed as (pageNumber * pageSize)
@@ -138,6 +144,7 @@ class FDC:
                          sort_by: str = None, sort_order: str = None, brand_owner: str = None) -> SearchResult:
         """
         Search for foods using keywords. Results can be filtered by dataType and there are options for result page sizes or sorting.
+
         :param query: One or more search terms. The string may include search operators: https://fdc.nal.usda.gov/help.html#bkmk-2
         :param data_type: Optional. Filter on a specific data type; specify one or more values in an array. Available values : Branded, Foundation, Survey (FNDDS), SR Legacy
         :param page_size: Optional. Maximum number of results to return for the current page. Default is 50. Min is 1, Max is 200
@@ -156,6 +163,7 @@ class FDC:
                              sort_by: str = None, sort_order: str = None, brand_owner: str = None) -> str:
         """
         Search for foods using keywords. Results can be filtered by dataType and there are options for result page sizes or sorting.
+
         :param query: One or more search terms. The string may include search operators: https://fdc.nal.usda.gov/help.html#bkmk-2
         :param data_type: Optional. Filter on a specific data type; specify one or more values in an array. Available values : Branded, Foundation, Survey (FNDDS), SR Legacy
         :param page_size: Optional. Maximum number of results to return for the current page. Default is 50. Min is 1, Max is 200
@@ -192,6 +200,7 @@ class FDC:
     def get_json_specs(self) -> str:
         """
         The OpenAPI 3.0 specification for the FDC API rendered as JSON (JavaScript Object Notation)
+
         :return: Returns the documentation found at https://app.swaggerhub.com/apis/fdcnal/food-data_central_api/1.0.1 in JSON notation
         """
         url = self.base_url + f"json-spec?api_key={self.api_key}"
@@ -203,6 +212,7 @@ class FDC:
     def get_yaml_specs(self) -> str:
         """
         The OpenAPI 3.0 specification for the FDC API rendered as YAML (YAML Ain't Markup Language)
+
         :return: Returns the documentation found at https://app.swaggerhub.com/apis/fdcnal/food-data_central_api/1.0.1 in YAML notation
         """
         url = self.base_url + f"yaml-spec?api_key={self.api_key}"
@@ -214,6 +224,7 @@ class FDC:
     def _match_data_type(self, item: dict, _format: str) -> Food:
         """
         Used to serialize the FoodItem properly.
+
         :param item: JSON of the food item.
         :param _format: Was the query Full or Abridged
         :return: A `Food` class
