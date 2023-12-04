@@ -1,18 +1,19 @@
 [project]
-name = "py-fdc"
-version = "0.0.1"
+name = "py-usda-fdc"
+version = "0.1.0"
 authors = [
-  { name="Patrick Stephane Tawil"},
+    { name="Patrick Stephane Tawil"},
+    {name = "Patrick S. Tawil", email = "patricktawil1@hotmail.com"},
 ]
-description = "A Python interface to interact with the USDA's FoodDataCentral API"
+description = ""
 readme = "README.md"
 requires-python = ">=3.10"
 
 dependencies = [
-  "requests",
-  "pyhumps",
-  "pytest"
+    "requests>=2.31.0",
+    "pyhumps>=3.8.0",
 ]
+license = {text = "GPL"}
 
 [project.urls]
 Homepage = "https://github.com/ghostiek/py-fdc"
@@ -27,3 +28,9 @@ addopts = [
     "--import-mode=importlib",
 ]
 pythonpath = "src"
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=7.4.3",
+    "sphinx>=7.2.6",
+    "twine>=4.0.2",
+]

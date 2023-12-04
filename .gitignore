@@ -259,4 +259,5 @@ config.json
 
 #pdm
 .pdm-build
+.pdm-python
 

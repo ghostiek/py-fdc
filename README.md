@@ -5,14 +5,26 @@ A python interface to interact with the USDA's FoodDataCentral API
 - An object oritented interface for FoodDataCentral's 
 
 ## Requirements
-- Python >=3.10 
+- Python >=3.10
 
 ## Dependencies
 - [requests](https://pypi.org/project/requests/)
 - [pyhumps](https://pypi.org/project/pyhumps/)
+
+### Development Dependencies
+- [PDM](https://pdm-project.org/latest/)
 - [pytest](https://pypi.org/project/pytest/)
+- [sphinx](https://pypi.org/project/Sphinx/)
 
 ## Installation
+
+The simplest way to install it is to pip install it.
+
+```bash
+pip install py-usda-fdc
+```
+
+To install the development version you can pip the git version.
 ```bash
 pip install git+https://github.com/ghostiek/py-fdc.git
 ```
